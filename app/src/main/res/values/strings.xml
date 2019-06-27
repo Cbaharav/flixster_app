@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Flixster</string>
+    <string name="title_activity_movie_details">MovieDetailsActivity</string>
 </resources>
