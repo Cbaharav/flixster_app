@@ -1,14 +1,15 @@
 package com.example.flixster;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.flixster.models.Movie;
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -21,7 +22,7 @@ import org.parceler.Parcels;
 import cz.msebera.android.httpclient.Header;
 
 
-public class MovieDetailsActivity extends AppCompatActivity {
+public class MovieDetailsActivity extends YouTubeBaseActivity {
 
     public final static String YT_API_BASE_URL = "https://api.themoviedb.org/3";
     public final static String YT_API_KEY_PARAM = "api_key";
@@ -33,7 +34,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     TextView tvTitle;
     TextView tvOverview;
     RatingBar rbVoteAverage;
-    Intent i;
+    //Intent i;
     AsyncHttpClient client;
     String videoId;
 
@@ -84,6 +85,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     //get key from first result object
                     videoId = results.getJSONObject(0).getString("key");
                     Log.d("Carmel", "successfully got key");
+                    playTrailer();
 
                 } catch (JSONException e) {
                     Log.e("ParsingFailure", "Failed to parse now playing movies");
@@ -95,16 +97,39 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 Log.e("DataFailure", "Failed to get data from now playing endpoint");
             }
         });
+
     }
 
-    public void playTrailer(View v) {
-        Log.d("Carmel", "title clicked");
-        //videoId is returning null
+    public void playTrailer() {
+//        Log.d("Carmel", "title clicked");
+//        //videoId is returning null
+//        if(videoId == null) finish();
+//        else {
+//            i = new Intent(MovieDetailsActivity.this, MovieTrailerActivity.class);
+//            i.putExtra("videoId", videoId);
+//            startActivity(i);
+//        }
+        Log.d("Carmel", "In movie trailer activity");
+
         if(videoId == null) finish();
         else {
-            i = new Intent(MovieDetailsActivity.this, MovieTrailerActivity.class);
-            i.putExtra("videoId", videoId);
-            startActivity(i);
+            //resolve the player view from the layout
+            YouTubePlayerView playerView = (YouTubePlayerView) findViewById(R.id.player);
+
+            //initialize with API key stored in secrets.xml
+            playerView.initialize(getString(R.string.youtube_api_key), new YouTubePlayer.OnInitializedListener() {
+                @Override
+                public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+                    //do any work here to cue video, play video, etc.
+                    youTubePlayer.cueVideo(videoId);
+                }
+
+                @Override
+                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+                    //log the error
+                    Log.e("MovieTrailerActivity", "Error initializing YouTube player");
+                }
+            });
         }
     }
 
