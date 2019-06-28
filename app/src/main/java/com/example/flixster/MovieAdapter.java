@@ -104,6 +104,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         ImageView ivBackdropImage;
         TextView tvTitle;
         TextView tvOverview;
+//        @BindView(R.id.ivPosterImage) ImageView ivPosterImage;
+//        @BindView(R.id.ivBackdropImage) ImageView ivBackdropImage;
+//        @BindView(R.id.tvTitle) TextView tvTitle;
+//        @BindView(R.id.tvOverview) TextView tvOverview;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -114,6 +118,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             //add this as the itemView's onClickListener
             itemView.setOnClickListener(this);
+//            ButterKnife.bind(this);
         }
 
         //when user clicks on a row, show MovieDetailsActivity for the selected movie
