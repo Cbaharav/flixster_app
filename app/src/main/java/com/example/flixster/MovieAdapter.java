@@ -128,7 +128,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             //add this as the itemView's onClickListener
             itemView.setOnClickListener(this);
-//            ButterKnife.bind(this);
+//            ButterKnife.bind(this, itemView);
         }
 
         //when user clicks on a row, show MovieDetailsActivity for the selected movie
