@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.graphics.Color;
 
 import com.bumptech.glide.Glide;
 import com.example.flixster.models.Config;
@@ -88,6 +89,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
                 .placeholder(placeholderId)
                 .error(placeholderId)
                 .into(imageView);
+
+        float voteAverage = movie.getVoteAverage().floatValue();
+        if(voteAverage >= 8f) {
+            viewHolder.itemView.setBackgroundColor(Color.GREEN);
+        }
+
+        if(voteAverage <= 5f) {
+            viewHolder.itemView.setBackgroundColor(Color.RED);
+        }
     }
 
     //returns the total number of items in the list
